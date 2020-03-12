@@ -18,3 +18,7 @@ import '@litt1e-p/progress-bar/dist/progressBar.css'
 
 <progress-bar :percent="your value"></progress-bar>
 ```
+
+# screenshots
+
+![](screenshots/1.gif)
