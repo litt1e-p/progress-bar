@@ -34,6 +34,11 @@ import '@litt1e-p/progress-bar/dist/progressBar.css'
 <progress-bar :percent="your value"></progress-bar>
 ``` 
 
+3. custom tintColor & bgColor
+```js
+<progress-bar :percent="your value" tintColor="#f0ff0f" bgColor="gray"></progress-bar>
+```
+
 # Screenshots
 
 ![](screenshots/1.gif)

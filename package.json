@@ -1,6 +1,6 @@
 {
   "name": "@litt1e-p/progress-bar",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a progress component with animation effect for vue",
   "config": {
     "libName": "progressBar"
