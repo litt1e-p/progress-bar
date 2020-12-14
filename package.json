@@ -1,6 +1,6 @@
 {
   "name": "@litt1e-p/progress-bar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a progress component with animation effect for vue",
   "config": {
     "libName": "progressBar"
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/litt1e-p/progress-bar#readme",
   "dependencies": {
     "vue": "^2.6.10",
-    "countup.js": "^2.0.4"
+    "countup.js": "^2.0.4",
+    "core-js": "^3.8.1"
   }
 }
