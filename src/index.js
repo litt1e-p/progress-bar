@@ -1,4 +1,4 @@
-import ProgressBar from 'components';
+import ProgressBar from './lib/index.vue';
 
 const components = [ProgressBar]
 

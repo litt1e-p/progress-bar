@@ -1,11 +1,11 @@
 <template>
   <div class="pb-main" :class="{ 'pb-main-vt': mode === 'vertical'}">
     <div class="bar" :style="{background: bgColor}">
-      <div v-if="mode === 'horizontal'" class="current" :style="{width: val + '%', background: tintColor}"></div>
-      <div v-else class="current" :style="{height: val + '%', background: tintColor}"></div>
+      <div v-if="mode === 'horizontal'" class="current" :style="{width: state.val + '%', background: tintColor}"></div>
+      <div v-else class="current" :style="{height: state.val + '%', background: tintColor}"></div>
     </div>
       <div v-if="mode === 'horizontal'">
-        <div :id="id" class="percent-mirror" :style="{display: showCountUp ? 'block' : 'none', color: textColor}">
+        <div :id="state.id" class="percent-mirror" :style="{display: showCountUp ? 'block' : 'none', color: textColor}">
         </div>
         <div class="percent" :style="{color: textColor}" v-if="!showCountUp">
           <slot name="percent" v-bind:percent="percent">
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div v-else>
-        <div :id="id" class="percent-mirror" :style="{display: showCountUp ? 'block' : 'none', color: textColor}">
+        <div :id="state.id" class="percent-mirror" :style="{display: showCountUp ? 'block' : 'none', color: textColor}">
         </div>
         <div class="percent" :style="{color: textColor}" v-if="!showCountUp">
           <slot name="percent" v-bind:percent="percent">
@@ -27,85 +27,90 @@
 
 <script>
 
-import { CountUp } from 'countup.js/dist/countUp.withPolyfill.min.js'
-import { isNumberic } from 'jstd'
-
 export default {
-  name: 'progressBar',
-  props: {
-    percent: {
-      type: [String, Number],
-      required: true,
-      default: () => '0'
-    },
-    tintColor: {
-      type: String,
-      default: () => 'rgb(0, 130, 251)'
-    },
-    bgColor: {
-      type: String,
-      default: () => 'rgba(0, 138, 251, 0.102)'
-    },
-    textColor: {
-      type: String,
-      default: () => '#999'
-    },
-    showCountUp: {
-      type: Boolean,
-      default: () => true
-    },
-    mode: {
-      type: String,
-      default: 'horizontal' // vertical
-    }
-  },
-  data () {
-    return {
-      val: '0',
-      cu: void 0,
-      id: void 0
-    }
-  },
-  mounted () {
-    this.in()
-  },
-  activated () {
-    this.ca(this.percent)
-  },
-  methods: {
-    in () {
-      this.id = this.ha()
-      this.ca(this.percent)
-    },
-    ha (n = 7) {
-      return (Math.random() * 0xFFFFFF << n).toString(16)
-    },
-    ca (nv, ov = 0) {
-      if (!isNumberic(nv)) {
-        return
-      }
-      setTimeout(() => {
-        this.cu = new CountUp(this.id, nv, { startVal: ov, suffix: '%', duration: 0.25 })
-        this.se(nv <= 0 ? 0.001 : (nv > 100 ? 100 : nv))
-      }, 500)
-    },
-    se (v) {
-      if (this.cu && !this.cu.error && this.showCountUp) {
-        this.cu.start()
-      }
-      this.val = v
-    },
-    up (sv, nv, ov) {
-      this.se(sv)
-      this.ca(nv, ov)
-    }
-  },
-  watch: {
-    percent (nv, ov) {
-      this.up(0, nv, ov)
-    }
-  }
+  name: 'progressBar'
 }
+
+</script>
+
+<script setup>
+
+import { reactive, onMounted, onActivated, watch } from 'vue'
+import { CountUp } from 'countup.js/dist/countUp.withPolyfill.min.js'
+import { isNumberic, hash } from 'jstd'
+
+const props = defineProps({
+  percent: {
+    type: [String, Number],
+    required: true,
+    default: '0'
+  },
+  tintColor: {
+    type: String,
+    default: 'rgb(0, 130, 251)'
+  },
+  bgColor: {
+    type: String,
+    default: 'rgba(0, 138, 251, 0.102)'
+  },
+  textColor: {
+    type: String,
+    default: '#999'
+  },
+  showCountUp: {
+    type: Boolean,
+    default: true
+  },
+  mode: {
+    type: String,
+    default: 'horizontal' // vertical
+  }
+})
+
+const state = reactive({
+  val: '0',
+  cu: void 0,
+  id: void 0
+})
+
+onMounted(() => {
+  _in()
+})
+
+onActivated(() => {
+  ca(props.percent)
+})
+
+const _in = () => {
+  state.id = hash()
+  ca(props.percent)
+}
+
+const ca = (nv, ov = 0) => {
+  if (!isNumberic(nv)) {
+    return
+  }
+  setTimeout(() => {
+    state.cu = new CountUp(state.id, nv, { startVal: ov, suffix: '%', duration: 0.25 })
+    se(nv <= 0 ? 0.001 : (nv > 100 ? 100 : nv))
+  }, 500)
+}
+
+const se = (v) => {
+  if (state.cu && !state.cu.error && props.showCountUp) {
+    state.cu.start()
+  }
+  state.val = v
+}
+
+const up = (sv, nv, ov) => {
+  se(sv)
+  ca(nv, ov)
+}
+
+watch(() => props.percent, (v, o) => {
+  up(0, v, o)
+})
 </script>
 
 <style lang="less" scoped>
