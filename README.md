@@ -2,6 +2,8 @@
 
 a progress component with count up animation effect for vue
 
+> [vue 3.x supports](https://github.com/litt1e-p/progress-bar/tree/next)
+
 # Installation
 
 ```js
