@@ -2,17 +2,17 @@
 
 a progress component with count up animation effect for vue
 
-> [vue 3.x supports](https://github.com/litt1e-p/progress-bar/tree/next)
+> [vue 2.x supports](https://github.com/litt1e-p/progress-bar)
 
 # Installation
 
 ```js
-npm i @litt1e-p/progress-bar --save
+npm i @litt1e-p/progress-bar@next
 ```
 
 # Usage
 
-1. global component via `Vue.use()`
+1. global component register
   
 ```js
 // in main.js
@@ -20,6 +20,8 @@ import ProgressBar from '@litt1e-p/progress-bar'
 import '@litt1e-p/progress-bar/dist/progressBar.css'
 // or 
 @import '@litt1e-p/progress-bar/dist/progressBar.css'
+
+createApp(App).use(Transitions).mount('#app')
 
 <progress-bar :percent="your value"></progress-bar>
 ```
